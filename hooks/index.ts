@@ -51,7 +51,7 @@ export function useWorkflowStatus({ projectId, workflowId, entryId }: UseWorkflo
       try {
         const params = new URLSearchParams({
           projectId,
-          workflowId,
+          workflowId: workflowId as string,
         });
         if (entryId) {
           params.append('entryId', entryId);
