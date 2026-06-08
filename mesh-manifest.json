@@ -1,0 +1,43 @@
+{
+  "type": "workflow-sidebar",
+  "displayName": "Workflow Sidebar",
+  "baseLocationUrl": "https://raptorial-micha-bally.ngrok-free.dev",
+  "locations": {
+    "dataConnectors": [
+      {
+        "type": "playground",
+        "displayName": "Integration Playground",
+        "dataArchetypes": {
+          "default": {
+            "displayName": "Integration Playground",
+            "dataEditorUrl": "/",
+            "typeEditorUrl": "/"
+          }
+        },
+        "dataSourceEditorUrl": "/"
+      }
+    ],
+    "canvas": {
+      "parameterTypes": [
+        {
+          "type": "playground",
+          "editorUrl": "/",
+          "displayName": "Integration Playground",
+          "configureUrl": "/",
+          "renderableInPropertyPanel": true
+        }
+      ],
+      "editorTools": [
+        {
+          "id": "workflow-sidebar-tool",
+          "name": "Workflow Sidebar",
+          "url": "/editorTools",
+          "iconUrl": "/workflow-icon.svg"
+        }
+      ]
+    },
+    "settings": {
+      "url": "/settings"
+    }
+  }
+}
