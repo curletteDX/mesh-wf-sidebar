@@ -187,7 +187,8 @@ export default function EditorTools() {
   const { data: workflow, loading, error, refetch } = useWorkflowStatus({
     projectId,
     workflowId,
-    entryId: entityType === 'entry' ? entityId : undefined,
+    entityId,
+    entityType: entityType as 'entry' | 'composition',
   });
 
   const [transitioning, setTransitioning] = useState<string | null>(null);

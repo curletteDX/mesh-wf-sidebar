@@ -1,7 +1,7 @@
 {
   "type": "workflow-sidebar",
   "displayName": "Workflow Sidebar",
-  "baseLocationUrl": "https://raptorial-micha-bally.ngrok-free.dev",
+  "baseLocationUrl": "https://mesh-wf-sidebar.vercel.app",
   "locations": {
     "dataConnectors": [
       {

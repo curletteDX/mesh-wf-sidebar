@@ -25,10 +25,11 @@ type WorkflowStatus = {
 type UseWorkflowStatusParams = {
   projectId: string;
   workflowId: string | undefined;
-  entryId?: string;
+  entityId?: string;
+  entityType?: 'entry' | 'composition';
 };
 
-export function useWorkflowStatus({ projectId, workflowId, entryId }: UseWorkflowStatusParams) {
+export function useWorkflowStatus({ projectId, workflowId, entityId, entityType }: UseWorkflowStatusParams) {
   const [data, setData] = useState<WorkflowStatus | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -53,8 +54,9 @@ export function useWorkflowStatus({ projectId, workflowId, entryId }: UseWorkflo
           projectId,
           workflowId: workflowId as string,
         });
-        if (entryId) {
-          params.append('entryId', entryId);
+        if (entityId && entityType) {
+          params.append('entityId', entityId);
+          params.append('entityType', entityType);
         }
         // Add timestamp to bust browser cache
         params.append('_t', Date.now().toString());
@@ -81,7 +83,7 @@ export function useWorkflowStatus({ projectId, workflowId, entryId }: UseWorkflo
     }
 
     fetchWorkflowStatus();
-  }, [projectId, workflowId, entryId, refetchCount]);
+  }, [projectId, workflowId, entityId, entityType, refetchCount]);
 
   return { data, loading, error, refetch };
 }
