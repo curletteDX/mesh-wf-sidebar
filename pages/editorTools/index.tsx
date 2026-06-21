@@ -229,6 +229,7 @@ export default function EditorTools() {
           entityId,
           entityType,
           targetStageId,
+          workflowId,
         }),
       });
 

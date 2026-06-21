@@ -6,7 +6,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const { projectId, entityId, entityType, targetStageId } = req.body;
+  const { projectId, entityId, entityType, targetStageId, workflowId } = req.body;
 
   if (!projectId || !entityId || !entityType || !targetStageId) {
     return res.status(400).json({ message: 'Missing required parameters' });
@@ -81,6 +81,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       await canvasClient.updateComposition({
         state: CANVAS_DRAFT_STATE,
         composition,
+        workflowId,
         workflowStageId: targetStageId,
       } as any);
 
