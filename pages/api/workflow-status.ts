@@ -63,10 +63,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         state: CANVAS_DRAFT_STATE,
       });
 
-      const composition = compositionResponse?.composition;
-      currentStageId = composition 
-        ? (composition as any).workflowStageId || (composition as any)._workflowStageId
-        : undefined;
+      // workflowStageId is at the response level, not inside composition
+      currentStageId = (compositionResponse as any).workflowStageId 
+        || (compositionResponse as any)._workflowStageId
+        || (compositionResponse?.composition as any)?.workflowStageId
+        || (compositionResponse?.composition as any)?._workflowStageId;
     }
 
     // Convert stages object to sorted array with transitions
