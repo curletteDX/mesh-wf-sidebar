@@ -3,6 +3,12 @@ import {
   Callout,
   LoadingIndicator,
   Button,
+  StatusBullet,
+  Chip,
+  Heading,
+  VerticalRhythm,
+  HorizontalRhythm,
+  Caption,
 } from "@uniformdev/design-system";
 import React, { useState } from "react";
 import { useWorkflowStatus } from "../../hooks";
@@ -29,7 +35,7 @@ function StepIcon({ status }: { status: StepStatus }) {
         width: '24px',
         height: '24px',
         borderRadius: '50%',
-        backgroundColor: '#22c55e',
+        backgroundColor: 'var(--color-success, #22c55e)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -54,8 +60,8 @@ function StepIcon({ status }: { status: StepStatus }) {
         width: '24px',
         height: '24px',
         borderRadius: '50%',
-        backgroundColor: 'white',
-        border: '2px solid #e5e7eb',
+        backgroundColor: 'var(--color-background, white)',
+        border: '2px solid var(--color-border, #e5e7eb)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -65,7 +71,7 @@ function StepIcon({ status }: { status: StepStatus }) {
           width: '10px',
           height: '10px',
           borderRadius: '50%',
-          backgroundColor: '#3b82f6',
+          backgroundColor: 'var(--color-primary, #3b82f6)',
         }} />
       </div>
     );
@@ -76,8 +82,8 @@ function StepIcon({ status }: { status: StepStatus }) {
       width: '24px',
       height: '24px',
       borderRadius: '50%',
-      backgroundColor: 'white',
-      border: '2px solid #e5e7eb',
+      backgroundColor: 'var(--color-background, white)',
+      border: '2px solid var(--color-border, #e5e7eb)',
       flexShrink: 0,
     }} />
   );
@@ -111,7 +117,7 @@ function WorkflowStepper({
                 <div style={{
                   width: '2px',
                   height: '24px',
-                  backgroundColor: index < currentIndex ? '#22c55e' : '#e5e7eb',
+                  backgroundColor: index < currentIndex ? 'var(--color-success, #22c55e)' : 'var(--color-border, #e5e7eb)',
                 }} />
               )}
             </div>
@@ -119,22 +125,16 @@ function WorkflowStepper({
             <div style={{
               paddingTop: '2px',
               fontWeight: status === 'current' ? 600 : 400,
-              color: status === 'upcoming' ? '#9ca3af' : '#111827',
+              color: status === 'upcoming' ? 'var(--color-text-tertiary, #9ca3af)' : 'var(--color-text-primary, #111827)',
               fontSize: '13px',
               lineHeight: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
             }}>
               {stage.name}
               {stage.autoPublish && status === 'upcoming' && (
-                <span style={{ 
-                  marginLeft: '6px',
-                  fontSize: '10px',
-                  color: '#059669',
-                  backgroundColor: '#d1fae5',
-                  padding: '1px 4px',
-                  borderRadius: '3px',
-                }}>
-                  auto-publish
-                </span>
+                <Chip text="auto-publish" size="sm" theme="utility-success" />
               )}
             </div>
           </div>
@@ -144,29 +144,6 @@ function WorkflowStepper({
   );
 }
 
-function StatusBadge({ published }: { published: boolean }) {
-  return (
-    <span style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: '4px',
-      fontSize: '11px',
-      fontWeight: 500,
-      padding: '2px 6px',
-      borderRadius: '4px',
-      backgroundColor: published ? '#d1fae5' : '#fef3c7',
-      color: published ? '#059669' : '#d97706',
-    }}>
-      <span style={{
-        width: '6px',
-        height: '6px',
-        borderRadius: '50%',
-        backgroundColor: published ? '#059669' : '#d97706',
-      }} />
-      {published ? 'Published' : 'Draft'}
-    </span>
-  );
-}
 
 export default function EditorTools() {
   const { value, metadata } = useMeshLocation<"canvasEditorTools">();
@@ -257,54 +234,48 @@ export default function EditorTools() {
 
   if (loading) {
     return (
-      <div style={{ padding: '24px', textAlign: 'center' }}>
+      <VerticalRhythm gap="sm" style={{ padding: 'var(--spacing-lg, 24px)', textAlign: 'center' }}>
         <LoadingIndicator />
-        <p style={{ marginTop: '8px', color: '#6b7280' }}>Loading workflow...</p>
-      </div>
+        <Caption>Loading workflow...</Caption>
+      </VerticalRhythm>
     );
   }
 
   if (error) {
     return (
-      <div style={{ padding: '16px' }}>
+      <VerticalRhythm style={{ padding: 'var(--spacing-md, 16px)' }}>
         <Callout type="error">{error}</Callout>
-      </div>
+      </VerticalRhythm>
     );
   }
 
   if (!workflowId) {
     return (
-      <div style={{ padding: '16px' }}>
+      <VerticalRhythm style={{ padding: 'var(--spacing-md, 16px)' }}>
         <Callout type="caution">
           No workflow assigned to this {entityType}.
         </Callout>
-      </div>
+      </VerticalRhythm>
     );
   }
 
   const isPublished = state === 64;
 
   return (
-    <div style={{ padding: '12px' }}>
-      {/* Header with status */}
-      <div style={{ 
-        marginBottom: '12px',
-        paddingBottom: '8px',
-        borderBottom: '1px solid #e5e7eb',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}>
-        <h3 style={{ 
-          margin: 0, 
-          fontSize: '14px', 
-          fontWeight: 600,
-          color: '#111827'
-        }}>
+    <VerticalRhythm gap="md" style={{ padding: 'var(--spacing-sm, 12px)' }}>
+      <HorizontalRhythm 
+        justify="space-between" 
+        align="center"
+        style={{ 
+          paddingBottom: 'var(--spacing-sm, 8px)',
+          borderBottom: '1px solid var(--color-border, #e5e7eb)',
+        }}
+      >
+        <Heading level={4} style={{ margin: 0 }}>
           {workflow?.workflowName || 'Workflow'}
-        </h3>
-        <StatusBadge published={isPublished} />
-      </div>
+        </Heading>
+        <StatusBullet status={isPublished ? "Published" : "Draft"} size="sm" />
+      </HorizontalRhythm>
 
       {/* Stepper */}
       {workflow?.stages && (
@@ -314,99 +285,63 @@ export default function EditorTools() {
         />
       )}
 
-      {/* Success Message */}
       {transitionSuccess && (
-        <div style={{
-          marginTop: '12px',
-          padding: '8px 12px',
-          backgroundColor: '#d1fae5',
-          color: '#065f46',
-          borderRadius: '6px',
-          fontSize: '12px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-        }}>
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-            <path d="M13.5 4.5L6 12L2.5 8.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+        <Callout type="success" compact>
           {transitionSuccess}
-        </div>
+        </Callout>
       )}
 
-      {/* Error Message */}
       {transitionError && (
-        <div style={{
-          marginTop: '12px',
-          padding: '8px 12px',
-          backgroundColor: '#fee2e2',
-          color: '#991b1b',
-          borderRadius: '6px',
-          fontSize: '12px',
-        }}>
+        <Callout type="error" compact>
           {transitionError}
-        </div>
+        </Callout>
       )}
 
-      {/* Available Transitions */}
       {allowedTransitions.length > 0 && (
-        <div style={{ 
-          marginTop: '16px',
-          paddingTop: '12px',
-          borderTop: '1px solid #e5e7eb',
-        }}>
-          <div style={{ 
-            fontSize: '11px', 
-            fontWeight: 500, 
-            color: '#6b7280', 
-            marginBottom: '8px',
-            textTransform: 'uppercase',
-            letterSpacing: '0.5px',
-          }}>
+        <VerticalRhythm 
+          gap="sm"
+          style={{ 
+            paddingTop: 'var(--spacing-sm, 12px)',
+            borderTop: '1px solid var(--color-border, #e5e7eb)',
+          }}
+        >
+          <Caption style={{ textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             Available Actions
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          </Caption>
+          <VerticalRhythm gap="xs">
             {allowedTransitions.map((t: Transition) => (
               <Button
                 key={t.to}
                 buttonType="secondary"
                 disabled={transitioning !== null}
-                style={{ 
-                  width: '100%', 
-                  justifyContent: 'center', 
-                  fontSize: '12px', 
-                  padding: '6px 12px',
-                  opacity: transitioning !== null ? 0.7 : 1,
-                }}
+                style={{ width: '100%', justifyContent: 'center' }}
                 onClick={() => handleTransition(t.to)}
               >
                 {transitioning === t.to ? (
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <HorizontalRhythm gap="sm" align="center">
                     <LoadingIndicator size="sm" />
-                    Moving...
-                  </span>
+                    <span>Moving...</span>
+                  </HorizontalRhythm>
                 ) : (
                   t.name || `Move to ${getTargetStageName(t.to)}`
                 )}
               </Button>
             ))}
-          </div>
-        </div>
+          </VerticalRhythm>
+        </VerticalRhythm>
       )}
 
-      {/* No transitions available message */}
       {transitions.length > 0 && allowedTransitions.length === 0 && (
-        <div style={{ 
-          marginTop: '16px',
-          paddingTop: '12px',
-          borderTop: '1px solid #e5e7eb',
-          fontSize: '12px',
-          color: '#9ca3af',
-          fontStyle: 'italic',
-        }}>
+        <Caption 
+          style={{ 
+            paddingTop: 'var(--spacing-sm, 12px)',
+            borderTop: '1px solid var(--color-border, #e5e7eb)',
+            fontStyle: 'italic',
+          }}
+        >
           No transitions available for your role
-        </div>
+        </Caption>
       )}
-    </div>
+    </VerticalRhythm>
   );
 }
